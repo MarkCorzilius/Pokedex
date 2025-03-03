@@ -1,0 +1,112 @@
+.search-container {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 400px;
+  margin-right: 40px;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 25px;
+}
+
+.search-button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background-color: #f25d50; /* Default red */
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.search-button img {
+  width: 20px;
+  height: 20px;
+  filter: brightness(1); /* Normal brightness */
+  transition: filter 0.3s ease;
+}
+
+/* Hover Effect */
+.search-button:hover {
+  background-color: #f98a7f; /* Lighter red */
+}
+
+.search-button:hover img {
+  filter: brightness(1.2); /* Lighten the search icon */
+}
+
+.logo-and-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-left: 40px;
+}
+
+#pokemon-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.pokemon-card {
+  background-color: #1e1e2e;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  color: white;
+  padding: 15px;
+}
+
+.pokemon-card:hover {
+  filter: brightness(1.2);
+  transition: filter 0.3s ease-in-out;
+}
+
+.pokemon-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
+  color: white;
+}
+
+.pokemon-image img {
+  width: 100px;
+  height: auto;
+  margin: 10px 0;
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.pokemon-image:hover {
+  transform: scale(1.3);
+}
+
+.pokemon-types {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.type-icon {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 5px 10px;
+  border-radius: 8px;
+}

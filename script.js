@@ -1,0 +1,51 @@
+async function init() {
+  let pokemonData = await fetchPokemonData();
+  renderPokemonCards(pokemonData);
+}
+
+window.onload = init;
+
+function renderPokemonCards(pokemonData) {
+  let container = document.getElementById("pokemon-container");
+  container.innerHTML = "";
+
+  for (let i = 0; i < pokemonData.length; i++) {
+    container.innerHTML += createPokemonCard(pokemonData[i]);
+  }
+}
+
+async function fetchPokemonData() {
+  try {
+    let response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=20&offset=0");
+    let data = await response.json();
+
+    let pokemonDetails = [];
+
+    for (let i = 0; i < data.results.length; i++) {
+      let pokemon = data.results[i].name;
+      let pokemonData = await handleFetch(pokemon);
+      pokemonDetails.push(pokemonData);
+    }
+    return pokemonDetails;
+  } catch (error) {
+    console.error("Error fetching Pokémon data:", error);
+    return [];
+  }
+}
+
+async function handleFetch(pokeParameter) {
+  let pokemon = pokeParameter;
+  let pokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
+  let pokemonData = await pokemonResponse.json();
+
+  let types = pokemonData.types.map((typeInfo) => typeInfo.type.name);
+  let imgUrl = pokemonData.sprites.other["official-artwork"].front_default;
+
+  const pokemonInstance = {
+    id: pokemonData.id,
+    name: pokemon,
+    imgUrl: imgUrl,
+    types: types,
+  };
+  return pokemonInstance;
+}

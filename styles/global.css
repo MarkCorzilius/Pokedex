@@ -1,0 +1,57 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 5px;
+  box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.2);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  display: grid;
+  grid-template-rows: 120px 1fr 120px;
+  min-height: 100vh;
+  max-width: 1440px;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background-color: rgb(24, 7, 33);
+  color: white;
+  width: 100vw;
+}
+
+footer {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: rgb(24, 7, 33);
+  color: white;
+  bottom: 0;
+}
+
+main {
+  background-color: rgb(70, 70, 136);
+}
