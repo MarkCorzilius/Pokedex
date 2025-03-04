@@ -17,6 +17,35 @@
     <script src="./scripts/template.js"></script>
   </head>
   <body onload="init()">
+    <div class="overlay" id="pokemonOverlay" onclick="closeOverlay()">
+      <div class="overlay-content" onclick="event.stopPropagation()">
+        <div class="overlay-header">
+          <span class="overlay-pokemon-id">#3</span>
+          <span class="overlay-pokemon-name">Venusaur</span>
+        </div>
+        <div class="overlay-body">
+          <div class="overlay-pokemon-image">
+            <img src="assets/images/venusaur.png" alt="Venusaur" />
+          </div>
+          <div class="overlay-pokemon-types">
+            <img class="overlay-type-icon" src="assets/icons/grass.svg" alt="Grass" />
+            <img class="overlay-type-icon" src="assets/icons/poison.svg" alt="Poison" />
+          </div>
+        </div>
+        <div class="overlay-tabs">
+          <button class="overlay-tab active">main</button>
+          <button class="overlay-tab">stats</button>
+          <button class="overlay-tab">evo chain</button>
+        </div>
+        <div class="overlay-details">
+          <p><span>Height</span>: 2 m</p>
+          <p><span>Weight</span>: 100 kg</p>
+          <p><span>Base experience</span>: 263</p>
+          <p><span>Abilities</span>: overgrow, chlorophyll</p>
+        </div>
+      </div>
+    </div>
+
     <header>
       <div class="logo-and-title">
         <img src="./assets/icons/pokeLogoOpt2.png" alt="logo" />

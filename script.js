@@ -44,7 +44,7 @@ async function handleFetch(pokeParameter) {
 
   const pokemonInstance = {
     id: pokemonData.id,
-    name: pokemon,
+    name: capitalizeWords(pokemonData.name),
     imgUrl: imgUrl,
     types: types,
   };
@@ -79,4 +79,16 @@ function renderTypeIcons(pokemon) {
       iconContainerRef.innerHTML += `<img class="type-icon" src="assets/icons/poke-type-icons/${type}.svg" alt="${type}">`;
     }
   }
+}
+
+function capitalizeWords(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function showOverlay() {
+  document.getElementById("pokemonOverlay").style.display = "flex";
+}
+
+function closeOverlay() {
+  document.getElementById("pokemonOverlay").style.display = "none";
 }

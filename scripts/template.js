@@ -1,6 +1,6 @@
 function createPokemonCard(pokemonDetails) {
   return `
-    <div id="pokemon-card${pokemonDetails.id}" class="pokemon-card">
+    <div id="pokemon-card${pokemonDetails.id}" class="pokemon-card" onclick="showOverlay()">
         <div class="pokemon-header">
             <span class="pokemon-number">${pokemonDetails.id}</span>
             <span class="pokemon-name">${pokemonDetails.name}</span>

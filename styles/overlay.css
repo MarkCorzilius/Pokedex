@@ -1,0 +1,91 @@
+/* Overlay background */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none; /* Hidden by default */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Main modal container */
+.overlay-content {
+  background: #112240;
+  border-radius: 10px;
+  width: 350px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Header section */
+.overlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Image section */
+.overlay-pokemon-image img {
+  width: 150px;
+  height: auto;
+  margin: 10px 0;
+}
+
+/* Type icons */
+.overlay-pokemon-types {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.overlay-type-icon {
+  width: 30px;
+  height: 30px;
+}
+
+/* Tabs section */
+.overlay-tabs {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.overlay-tab {
+  background: none;
+  border: none;
+  color: white;
+  padding: 5px 15px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.overlay-tab.active {
+  border-bottom: 3px solid #38bdf8;
+}
+
+/* Details section */
+.overlay-details {
+  color: white;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.overlay-details p {
+  margin: 5px 0;
+}
+
+.overlay-details span {
+  font-weight: bold;
+}

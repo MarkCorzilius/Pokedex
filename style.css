@@ -73,6 +73,7 @@
   color: white;
   padding: 15px;
   transition: transform 0.2s ease-in-out;
+  cursor: pointer;
 }
 
 .pokemon-card:hover {
