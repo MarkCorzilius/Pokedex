@@ -39,6 +39,7 @@ header {
   background-color: rgb(24, 7, 33);
   color: white;
   width: 100vw;
+  z-index: 1000;
 }
 
 footer {

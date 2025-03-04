@@ -110,3 +110,58 @@
   padding: 5px 10px;
   border-radius: 8px;
 }
+
+.bug-bg {
+  background-color: #a8b820;
+} /* Bug - Greenish */
+.dark-bg {
+  background-color: #705848;
+} /* Dark - Dark Brown */
+.dragon-bg {
+  background-color: #7038f8;
+} /* Dragon - Purple */
+.electric-bg {
+  background-color: #f8d030;
+} /* Electric - Yellow */
+.fairy-bg {
+  background-color: #ee99ac;
+} /* Fairy - Pink */
+.fighting-bg {
+  background-color: #c03028;
+} /* Fighting - Red */
+.fire-bg {
+  background-color: #f08030;
+} /* Fire - Orange */
+.flying-bg {
+  background-color: #a890f0;
+} /* Flying - Light Purple */
+.ghost-bg {
+  background-color: #705898;
+} /* Ghost - Dark Purple */
+.grass-bg {
+  background-color: #78c850;
+} /* Grass - Green */
+.ground-bg {
+  background-color: #e0c068;
+} /* Ground - Light Brown */
+.ice-bg {
+  background-color: #98d8d8;
+} /* Ice - Cyan */
+.normal-bg {
+  background-color: #a8a878;
+} /* Normal - Grey */
+.poison-bg {
+  background-color: #a040a0;
+} /* Poison - Purple */
+.psychic-bg {
+  background-color: #f85888;
+} /* Psychic - Pink */
+.rock-bg {
+  background-color: #b8a038;
+} /* Rock - Brown */
+.steel-bg {
+  background-color: #b8b8d0;
+} /* Steel - Metallic Grey */
+.water-bg {
+  background-color: #6890f0;
+} /* Water - Blue */

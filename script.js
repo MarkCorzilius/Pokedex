@@ -1,6 +1,7 @@
 async function init() {
   let pokemonData = await fetchPokemonData();
   renderPokemonCards(pokemonData);
+  fetchPokemonType(pokemonData);
 }
 
 window.onload = init;
@@ -48,4 +49,19 @@ async function handleFetch(pokeParameter) {
     types: types,
   };
   return pokemonInstance;
+}
+
+async function fetchPokemonType(pokemonData) {
+  for (let i = 0; i < pokemonData.length; i++) {
+    console.log(`Types for ${pokemonData[i].name}: ${pokemonData[i].types.join(", ")}`);
+    checkTypeColor(pokemonData[i]);
+  }
+}
+
+function checkTypeColor(pokemon) {
+  let primaryType = pokemon.types[0] + "-bg";
+  let card = document.getElementById(`pokemon-card${pokemon.id}`);
+  if (card) {
+    card.style.backgroundColor = typeColors[primaryType];
+  }
 }

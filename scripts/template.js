@@ -1,6 +1,6 @@
 function createPokemonCard(pokemonDetails) {
   return `
-    <div class="pokemon-card">
+    <div id="pokemon-card${pokemonDetails.id}" class="pokemon-card">
         <div class="pokemon-header">
             <span class="pokemon-number">${pokemonDetails.id}</span>
             <span class="pokemon-name">${pokemonDetails.name}</span>
