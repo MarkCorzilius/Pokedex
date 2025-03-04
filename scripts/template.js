@@ -8,13 +8,8 @@ function createPokemonCard(pokemonDetails) {
         <div class="pokemon-image">
             <img src="${pokemonDetails.imgUrl}" alt="Pokemon Image">
         </div>
-        <div class="pokemon-types">
-        ${pokemonDetails.types
-          .map(
-            (type) =>
-              `<img class="type-icon" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-iii/colosseum/3.png" alt="">`
-          )
-          .join("")}
+        <div id="pokemon-types${pokemonDetails.id}" class="pokemon-types">
+    
         </div>
     </div>
     `;

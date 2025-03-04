@@ -55,6 +55,7 @@ async function fetchPokemonType(pokemonData) {
   for (let i = 0; i < pokemonData.length; i++) {
     console.log(`Types for ${pokemonData[i].name}: ${pokemonData[i].types.join(", ")}`);
     checkTypeColor(pokemonData[i]);
+    renderTypeIcons(pokemonData[i]);
   }
 }
 
@@ -63,5 +64,19 @@ function checkTypeColor(pokemon) {
   let card = document.getElementById(`pokemon-card${pokemon.id}`);
   if (card) {
     card.style.backgroundColor = typeColors[primaryType];
+  }
+}
+
+function renderTypeIcons(pokemon) {
+  let iconContainerRef = document.getElementById(`pokemon-types${pokemon.id}`);
+
+  if (!iconContainerRef) return;
+
+  for (let i = 0; i < pokemon.types.length; i++) {
+    let type = pokemon.types[i];
+
+    if (typeColors[`${type}-bg`]) {
+      iconContainerRef.innerHTML += `<img class="type-icon" src="assets/icons/poke-type-icons/${type}.svg" alt="${type}">`;
+    }
   }
 }
