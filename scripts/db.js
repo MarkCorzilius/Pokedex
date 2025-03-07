@@ -1,3 +1,5 @@
+let pokemonDetails = [];
+
 const typeColors = {
   "bug-bg": "#a8b820",
   "dark-bg": "#705848",
@@ -18,3 +20,7 @@ const typeColors = {
   "steel-bg": "#b8b8d0",
   "water-bg": "#6890f0",
 };
+
+let offset = 20;
+
+const limit = 20;
