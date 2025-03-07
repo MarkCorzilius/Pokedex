@@ -118,25 +118,31 @@ function renderOverlayTypeIcons(pokemon) {
   }
 }
 
-async function fetchMorePokemons() {
-  try {
-    let response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
-    let data = await response.json();
+async function fetchPokemonList() {
+  let response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
+  let data = await response.json();
+  return data.results;
+}
 
-    let newPokemonList = [];
-    let newPokemonHTML = [];
+async function fetchPokemonDetails(pokemonList) {
+  let newPokemonList = [];
+  let newPokemonHTML = [];
 
-    for (let i = 0; i < data.results.length; i++) {
-      let pokemonData = await handleFetch(data.results[i].name);
-      pokemonDetails.push(pokemonData);
-      newPokemonList.push(pokemonData);
-      newPokemonHTML.push(createPokemonCard(pokemonData));
-    }
-
-    document.getElementById("pokemon-container").innerHTML += newPokemonHTML.join("");
-    offset += limit;
-    fetchPokemonType(newPokemonList);
-  } catch (error) {
-    console.error("Error fetching Pokémon:", error);
+  for (let i = 0; i < pokemonList.length; i++) {
+    let pokemonData = await handleFetch(pokemonList[i].name);
+    pokemonDetails.push(pokemonData);
+    newPokemonList.push(pokemonData);
+    newPokemonHTML.push(createPokemonCard(pokemonData));
   }
+
+  return { newPokemonList, newPokemonHTML };
+}
+
+async function fetchMorePokemons() {
+  let pokemonList = await fetchPokemonList();
+  let { newPokemonList, newPokemonHTML } = await fetchPokemonDetails(pokemonList);
+
+  document.getElementById("pokemon-container").innerHTML += newPokemonHTML.join("");
+  offset += limit;
+  fetchPokemonType(newPokemonList);
 }
