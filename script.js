@@ -30,22 +30,23 @@ async function fetchPokemonData() {
     return [];
   }
 }
+async function handleFetch(pokemon) {
+  let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
+  let data = await response.json();
+  return formatPokemonData(data);
+}
 
-async function handleFetch(pokeParameter) {
-  let pokemon = pokeParameter;
-  let pokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
-  let pokemonData = await pokemonResponse.json();
-
-  let types = pokemonData.types.map((typeInfo) => typeInfo.type.name);
-  let imgUrl = pokemonData.sprites.other["official-artwork"].front_default;
-
-  const pokemonInstance = {
-    id: pokemonData.id,
-    name: capitalizeWords(pokemonData.name),
-    imgUrl: imgUrl,
-    types: types,
+async function formatPokemonData(data) {
+  return {
+    id: data.id,
+    name: capitalizeWords(data.name),
+    imgUrl: data.sprites.other["official-artwork"].front_default,
+    types: data.types.map((typeInfo) => typeInfo.type.name),
+    height: data.height,
+    weight: data.weight,
+    baseExperience: data.base_experience,
+    abilities: data.abilities.map((a) => capitalizeWords(a.ability.name)),
   };
-  return pokemonInstance;
 }
 
 async function fetchPokemonType(pokemonData) {
@@ -139,6 +140,8 @@ async function fetchPokemonDetails(pokemonList) {
 }
 
 async function fetchMorePokemons() {
+  if (!enforcePokemonRenderLimit()) return;
+
   let pokemonList = await fetchPokemonList();
   let { newPokemonList, newPokemonHTML } = await fetchPokemonDetails(pokemonList);
 
@@ -146,3 +149,37 @@ async function fetchMorePokemons() {
   offset += limit;
   fetchPokemonType(newPokemonList);
 }
+
+function enforcePokemonRenderLimit() {
+  if (offset >= 200) {
+    alert("Limit of 200 Pokémon reached!");
+    return false;
+  } else return true;
+}
+
+function filterRenderedPokemons() {
+  const input = document.getElementById("search-input").value.toLowerCase();
+  const allRenderedPokemons = document.querySelectorAll(".pokemon-card");
+
+  for (let i = 0; i < allRenderedPokemons.length; i++) {
+    let pokemonName = allRenderedPokemons[i].querySelector(".pokemon-name").textContent.toLowerCase();
+
+    if (pokemonName.includes(input)) {
+      allRenderedPokemons[i].style.display = "block";
+    } else {
+      allRenderedPokemons[i].style.display = "none";
+    }
+  }
+}
+
+function switchOverlayTab(tabName, clickedButton) {
+  const allTabs = document.querySelectorAll(".overlay-tab");
+
+  allTabs.forEach((tab) => tab.classList.remove("active"));
+
+  clickedButton.classList.add("active");
+
+  renderTabContent(tabName);
+}
+
+function renderTabContent() {}

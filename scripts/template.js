@@ -32,17 +32,21 @@ function getInfoOverlay(pokemon) {
               </div>
             </div>
             <div class="overlay-tabs">
-              <button class="overlay-tab active">main</button>
-              <button class="overlay-tab">stats</button>
-              <button class="overlay-tab">evo chain</button>
+              <button class="overlay-tab active" onclick="switchOverlayTab('main', this)">main</button>
+              <button class="overlay-tab" onclick="switchOverlayTab('stats', this)">stats</button>
+              <button class="overlay-tab" onclick="switchOverlayTab('evochain', this)">evo chain</button>
             </div>
-            <div class="overlay-details">
-              <p><span>Height</span>: 2 m</p>
-              <p><span>Weight</span>: 100 kg</p>
-              <p><span>Base experience</span>: 263</p>
-              <p><span>Abilities</span>: overgrow, chlorophyll</p>
+            <div class="overlay-details">${createOverlayDetails(pokemon)}
             </div>
           </div>`;
 
   renderOverlayTypeIcons(pokemon);
+}
+
+function createOverlayDetails(pokemon) {
+  return `
+      <p><strong>Height:</strong> ${pokemon.height / 10} m</p>
+      <p><strong>Weight:</strong> ${pokemon.weight / 10} kg</p>
+      <p><strong>Base Experience:</strong> ${pokemon.baseExperience}</p>
+      <p><strong>Abilities:</strong> ${pokemon.abilities.join(", ")}</p>`;
 }

@@ -25,8 +25,8 @@
         <h1>Pokedex</h1>
       </div>
       <div class="search-container">
-        <input type="text" class="search-input" placeholder="Search your Pokemon" />
-        <button onclick="fetchMorePokemons()" class="search-button">
+        <input type="text" id="search-input" class="search-input" oninput="filterRenderedPokemons()" placeholder="Search your Pokemon" />
+        <button onclick="fetchMorePokemons()" id="search-button" class="search-button">
           <img src="assets/icons/searchLoop.png" alt="Search" />
         </button>
       </div>
