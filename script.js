@@ -84,6 +84,7 @@ function capitalizeWords(str) {
 
 function showOverlay(pokemonInfo) {
   document.getElementById("pokemonOverlay").style.display = "flex";
+  currentPokemon = pokemonInfo;
   getInfoOverlay(pokemonInfo);
   checkOverlayBgColor(pokemonInfo);
 }
@@ -182,4 +183,23 @@ function switchOverlayTab(tabName, clickedButton) {
   renderTabContent(tabName);
 }
 
-function renderTabContent() {}
+function renderTabContent(tabName) {
+  let tabsContainerRef = document.getElementById("overlay-details");
+  tabsContainerRef.innerHTML = "";
+
+  switch (tabName) {
+    case "main":
+      tabsContainerRef.innerHTML = createOverlayDetailsMain(currentPokemon);
+      break;
+    case "stats":
+      tabsContainerRef.innerHTML = createOverlayDetailsStats();
+      break;
+
+    case "evochain":
+      break;
+
+    default:
+      createOverlayDetailsMain(currentPokemon);
+      break;
+  }
+}

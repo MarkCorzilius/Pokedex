@@ -31,22 +31,80 @@ function getInfoOverlay(pokemon) {
 
               </div>
             </div>
-            <div class="overlay-tabs">
+            <div id="overlay-tabs" class="overlay-tabs">
               <button class="overlay-tab active" onclick="switchOverlayTab('main', this)">main</button>
               <button class="overlay-tab" onclick="switchOverlayTab('stats', this)">stats</button>
               <button class="overlay-tab" onclick="switchOverlayTab('evochain', this)">evo chain</button>
             </div>
-            <div class="overlay-details">${createOverlayDetails(pokemon)}
+            <div id="overlay-details" class="overlay-details">${createOverlayDetailsMain(pokemon)}
             </div>
           </div>`;
 
   renderOverlayTypeIcons(pokemon);
 }
 
-function createOverlayDetails(pokemon) {
+function createOverlayDetailsMain(currentPokemon) {
   return `
-      <p><strong>Height:</strong> ${pokemon.height / 10} m</p>
-      <p><strong>Weight:</strong> ${pokemon.weight / 10} kg</p>
-      <p><strong>Base Experience:</strong> ${pokemon.baseExperience}</p>
-      <p><strong>Abilities:</strong> ${pokemon.abilities.join(", ")}</p>`;
+      <p><strong>Height:</strong> ${currentPokemon.height / 10} m</p>
+      <p><strong>Weight:</strong> ${currentPokemon.weight / 10} kg</p>
+      <p><strong>Base Experience:</strong> ${currentPokemon.baseExperience}</p>
+      <p><strong>Abilities:</strong> ${currentPokemon.abilities.join(", ")}</p>`;
+}
+
+function createOverlayDetailsStats() {
+  return `<div class="stats">
+        <div class="stat-row">
+            <div class="stat-label">HP</div>
+            <div class="stat-value">45</div>
+            <div class="progress-container">
+                <div class="progress-bar red" style="width: 45%;"></div>
+            </div>
+        </div>
+
+        <div class="stat-row">
+            <div class="stat-label">Attack</div>
+            <div class="stat-value">60</div>
+            <div class="progress-container">
+                <div class="progress-bar green" style="width: 60%;"></div>
+            </div>
+        </div>
+
+        <div class="stat-row">
+            <div class="stat-label">Defense</div>
+            <div class="stat-value">48</div>
+            <div class="progress-container">
+                <div class="progress-bar red" style="width: 48%;"></div>
+            </div>
+        </div>
+
+        <div class="stat-row">
+            <div class="stat-label">Sp. Atk</div>
+            <div class="stat-value">65</div>
+            <div class="progress-container">
+                <div class="progress-bar green" style="width: 65%;"></div>
+            </div>
+        </div>
+
+        <div class="stat-row">
+            <div class="stat-label">Sp. Def</div>
+            <div class="stat-value">65</div>
+            <div class="progress-container">
+                <div class="progress-bar green" style="width: 65%;"></div>
+            </div>
+        </div>
+
+        <div class="stat-row">
+            <div class="stat-label">Speed</div>
+            <div class="stat-value">45</div>
+            <div class="progress-container">
+                <div class="progress-bar red" style="width: 45%;"></div>
+            </div>
+        </div>
+
+        <div class="stat-row">
+            <div class="stat-label">Total</div>
+            <div class="stat-value">317</div>
+            <div class="progress-container">
+                <div class="progress-bar green" style="width: 80%;"></div>
+            </div>`;
 }
