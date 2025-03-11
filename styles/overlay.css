@@ -98,10 +98,12 @@
   max-width: 400px;
   margin: auto;
 }
+
 .tabs {
   display: flex;
   border-bottom: 2px solid #ddd;
 }
+
 .tab {
   flex: 1;
   text-align: center;
@@ -109,25 +111,30 @@
   cursor: pointer;
   color: gray;
 }
+
 .tab.active {
   font-weight: bold;
   color: black;
   border-bottom: 2px solid blue;
 }
+
 .stat-row {
   display: flex;
   align-items: center;
   margin: 8px 0;
 }
+
 .stat-label {
   width: 80px;
   font-weight: bold;
 }
+
 .stat-value {
   width: 40px;
   text-align: right;
   font-weight: bold;
 }
+
 .progress-container {
   flex: 1;
   background: #eee;
@@ -136,12 +143,41 @@
   margin-left: 10px;
   overflow: hidden;
 }
+
 .progress-bar {
   height: 100%;
 }
+
 .red {
   background: #e74c3c;
 } /* Red for low stats */
+
 .green {
   background: #2ecc71;
+}
+
+.evo-chain {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #0f243e;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+}
+
+.evo-stage {
+  text-align: center;
+}
+
+.evo-stage img {
+  width: 50px;
+  height: 50px;
+  background-color: lightgray; /* Placeholder */
+  border-radius: 50%;
+}
+
+.arrow {
+  font-size: 24px;
+  color: white;
 }

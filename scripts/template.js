@@ -51,60 +51,53 @@ function createOverlayDetailsMain(currentPokemon) {
       <p><strong>Abilities:</strong> ${currentPokemon.abilities.join(", ")}</p>`;
 }
 
-function createOverlayDetailsStats() {
-  return `<div class="stats">
-        <div class="stat-row">
-            <div class="stat-label">HP</div>
-            <div class="stat-value">45</div>
-            <div class="progress-container">
-                <div class="progress-bar red" style="width: 45%;"></div>
-            </div>
-        </div>
+function getStatsTemplate(pokemon) {
+  const statNames = ["HP", "Attack", "Defense", "Sp. Atk", "Sp. Def", "Speed"];
+  let statsHTML = "";
 
-        <div class="stat-row">
-            <div class="stat-label">Attack</div>
-            <div class="stat-value">60</div>
-            <div class="progress-container">
-                <div class="progress-bar green" style="width: 60%;"></div>
-            </div>
-        </div>
+  for (let i = 0; i < pokemon.stats.length; i++) {
+    let statValue = pokemon.stats[i];
+    let statName = statNames[i];
 
+    statsHTML += `
         <div class="stat-row">
-            <div class="stat-label">Defense</div>
-            <div class="stat-value">48</div>
-            <div class="progress-container">
-                <div class="progress-bar red" style="width: 48%;"></div>
-            </div>
-        </div>
+          <div class="stat-label">${statName}</div>
+          <div class="stat-value">${statValue}</div>
+          <div class="progress-container">
+            <div class="progress-bar ${statValue >= 50 ? "green" : "red"}" style="width: ${(statValue / 150) * 100}%;"></div>
+          </div>
+        </div>`;
+  }
 
-        <div class="stat-row">
-            <div class="stat-label">Sp. Atk</div>
-            <div class="stat-value">65</div>
-            <div class="progress-container">
-                <div class="progress-bar green" style="width: 65%;"></div>
-            </div>
-        </div>
+  let totalStats = pokemon.stats.reduce((sum, stat) => sum + stat, 0);
 
-        <div class="stat-row">
-            <div class="stat-label">Sp. Def</div>
-            <div class="stat-value">65</div>
-            <div class="progress-container">
-                <div class="progress-bar green" style="width: 65%;"></div>
-            </div>
+  statsHTML += `
+      <div class="stat-row">
+        <div class="stat-label">Total</div>
+        <div class="stat-value">${totalStats}</div>
+        <div class="progress-container">
+          <div class="progress-bar green" style="width: ${(totalStats / 900) * 100}%;"></div>
         </div>
+      </div>`;
 
-        <div class="stat-row">
-            <div class="stat-label">Speed</div>
-            <div class="stat-value">45</div>
-            <div class="progress-container">
-                <div class="progress-bar red" style="width: 45%;"></div>
-            </div>
-        </div>
+  return statsHTML;
+}
 
-        <div class="stat-row">
-            <div class="stat-label">Total</div>
-            <div class="stat-value">317</div>
-            <div class="progress-container">
-                <div class="progress-bar green" style="width: 80%;"></div>
-            </div>`;
+function getEvoChainTemplate() {
+  return `<div class="evo-chain">
+    <div class="evo-stage">
+        <img src="" alt="Bulbasaur">
+        <p>Bulbasaur</p>
+    </div>
+    <span class="arrow"> &gt;&gt; </span>
+    <div class="evo-stage">
+        <img src="" alt="Ivysaur">
+        <p>Ivysaur</p>
+    </div>
+    <span class="arrow"> &gt;&gt; </span>
+    <div class="evo-stage">
+        <img src="" alt="Venusaur">
+        <p>Venusaur</p>
+    </div>
+</div>`;
 }

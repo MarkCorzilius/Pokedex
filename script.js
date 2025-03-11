@@ -2,6 +2,7 @@ async function init() {
   let pokemonData = await fetchPokemonData();
   renderPokemonCards(pokemonData);
   fetchPokemonType(pokemonData);
+  pokemonData.forEach((pokemon) => fetchPokemonSpecies(pokemon.name));
 }
 
 window.onload = init;
@@ -46,7 +47,35 @@ async function formatPokemonData(data) {
     weight: data.weight,
     baseExperience: data.base_experience,
     abilities: data.abilities.map((a) => capitalizeWords(a.ability.name)),
+    stats: data.stats.map((stat) => stat.base_stat),
+    chain: [],
   };
+}
+
+async function fetchPokemonSpecies(pokemonName) {
+  let speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`);
+  let speciesData = await speciesResponse.json();
+  accessPokemonChain(speciesData, pokemonName);
+}
+
+async function accessPokemonChain(speciesData, pokemonName) {
+  let chainUrl = speciesData.evolution_chain.url;
+  let chainResponse = await fetch(chainUrl);
+  let chainData = await chainResponse.json();
+
+  let chain = chainData.chain;
+  let chainArray = [];
+
+  while (chain) {
+    chainArray.push(chain.species.name);
+    chain = chain.evolves_to.length ? chain.evolves_to[0] : null;
+  }
+
+  pokemonDetails.forEach((pokemon) => {
+    if (pokemon.name.toLowerCase() === pokemonName.toLowerCase()) {
+      pokemon.chain = chainArray;
+    }
+  });
 }
 
 async function fetchPokemonType(pokemonData) {
@@ -192,10 +221,11 @@ function renderTabContent(tabName) {
       tabsContainerRef.innerHTML = createOverlayDetailsMain(currentPokemon);
       break;
     case "stats":
-      tabsContainerRef.innerHTML = createOverlayDetailsStats();
+      tabsContainerRef.innerHTML = getStatsTemplate(currentPokemon);
       break;
 
     case "evochain":
+      tabsContainerRef.innerHTML = getEvoChainTemplate();
       break;
 
     default:
