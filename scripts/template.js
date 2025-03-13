@@ -38,11 +38,14 @@ function getInfoOverlay(pokemon) {
             </div>
             <div id="overlay-details" class="overlay-details">${createOverlayDetailsMain(pokemon)}
             </div>
+            <div class="switch-cart-container">
+            <img onclick="changeOverlayPage('previous', ${pokemon.id})" src="./assets/icons/leftNotHovered.png" alt="switch left">
+            <img onclick="changeOverlayPage('next', ${pokemon.id})" src="./assets/icons/rightNotHovered.png" alt="switch right">
+            </div>
           </div>`;
 
   renderOverlayTypeIcons(pokemon);
 }
-
 function createOverlayDetailsMain(currentPokemon) {
   return `
       <p><strong>Height:</strong> ${currentPokemon.height / 10} m</p>

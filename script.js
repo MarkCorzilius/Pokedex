@@ -265,3 +265,14 @@ async function renderTabContent(tabName) {
       break;
   }
 }
+
+function changeOverlayPage(direction, pokemonId) {
+  if (direction === "previous" && pokemonId > 1) {
+    pokemonId--;
+  } else if (direction === "next" && pokemonId < offset) {
+    pokemonId++;
+  } else return;
+
+  let newPokemon = pokemonDetails.find((p) => p.id === pokemonId);
+  showOverlay(newPokemon);
+}

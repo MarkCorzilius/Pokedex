@@ -192,6 +192,23 @@
   box-shadow: inset 0 0 10px 5px rgba(255, 255, 255, 0.5);
   transition: transform 0.3s ease-in-out;
 }
+
 .overlay-body:hover .overlay-pokemon-img {
   transform: scale(1.4);
+}
+
+.switch-cart-container {
+  padding: 16px 24px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.switch-cart-container img {
+  transition: filter 0.3 ease;
+}
+
+.switch-cart-container img:hover {
+  filter: brightness(50%);
 }
