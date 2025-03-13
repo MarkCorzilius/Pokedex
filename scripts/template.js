@@ -23,9 +23,9 @@ function getInfoOverlay(pokemon) {
               <span class="overlay-pokemon-id">#${pokemon.id}</span>
               <span class="overlay-pokemon-name">${pokemon.name}</span>
             </div>
-            <div id="overlay-body">
+            <div id="overlay-body" class="overlay-body">
               <div class="overlay-pokemon-image">
-                <img src="${pokemon.imgUrl}" alt="Pokemon Image" />
+                <img class="overlay-pokemon-img" src="${pokemon.imgUrl}" alt="Pokemon Image" />
               </div>
               <div class="overlay-pokemon-types" id="overlay-pokemon-types${pokemon.id}">
 
