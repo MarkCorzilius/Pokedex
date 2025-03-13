@@ -1,0 +1,81 @@
+/* Large screens (Full HD and above) */
+@media (max-width: 1200px) {
+}
+
+/* Laptops and small desktops */
+@media (max-width: 1024px) {
+}
+
+/* Tablets (portrait & landscape) */
+@media (max-width: 768px) {
+  .search-container {
+    width: auto;
+    margin-right: 16px;
+  }
+}
+
+@media (max-width: 549px) {
+  header {
+    flex-direction: column;
+    justify-content: center;
+    height: 200px;
+  }
+
+  .search-container {
+    width: 400px;
+    margin-right: 0;
+    margin-bottom: 24px;
+  }
+
+  .logo-and-title {
+    margin-left: 0;
+    margin-top: 24px;
+  }
+
+  .overlay-content {
+    transform: translateY(50px);
+  }
+}
+
+/* Small screens (phones) */
+@media (max-width: 480px) {
+  .search-container {
+    width: auto;
+  }
+
+  .overlay-content {
+    width: 240px;
+  }
+
+  .type-icon {
+    height: 48px;
+    width: 48px;
+  }
+
+  .overlay-pokemon-image img {
+    width: 100px;
+    height: auto;
+  }
+
+  .overlay-details span {
+    display: none;
+  }
+
+  .evo-chain {
+    flex-direction: column;
+  }
+
+  .evo-stage img {
+    width: 56px;
+    height: 56px;
+    margin-right: 8px;
+  }
+
+  .evo-stage {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    width: 100%;
+  }
+}

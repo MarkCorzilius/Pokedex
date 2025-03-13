@@ -83,21 +83,23 @@ function getStatsTemplate(pokemon) {
   return statsHTML;
 }
 
-function getEvoChainTemplate() {
-  return `<div class="evo-chain">
-    <div class="evo-stage">
-        <img src="" alt="Bulbasaur">
-        <p>Bulbasaur</p>
-    </div>
-    <span class="arrow"> &gt;&gt; </span>
-    <div class="evo-stage">
-        <img src="" alt="Ivysaur">
-        <p>Ivysaur</p>
-    </div>
-    <span class="arrow"> &gt;&gt; </span>
-    <div class="evo-stage">
-        <img src="" alt="Venusaur">
-        <p>Venusaur</p>
-    </div>
-</div>`;
+function getEvoChainTemplate(pokemonDetails) {
+  if (!pokemonDetails.chain || pokemonDetails.chain.length === 0) {
+    return `<p>No evolution data available.</p>`;
+  }
+
+  let stages = pokemonDetails.chain
+    .map(({ name, id }) => {
+      let imgSrc = id ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png` : "";
+
+      return `
+          <div class="evo-stage">
+              <img src="${imgSrc}" alt="${name}">
+              <p>${name}</p>
+          </div>
+        `;
+    })
+    .join('<span class="arrow"> &gt;&gt; </span>');
+
+  return `<div class="evo-chain">${stages}</div>`;
 }

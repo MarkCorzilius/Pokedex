@@ -2,7 +2,6 @@ async function init() {
   let pokemonData = await fetchPokemonData();
   renderPokemonCards(pokemonData);
   fetchPokemonType(pokemonData);
-  pokemonData.forEach((pokemon) => fetchPokemonSpecies(pokemon.name));
 }
 
 window.onload = init;
@@ -31,6 +30,7 @@ async function fetchPokemonData() {
     return [];
   }
 }
+
 async function handleFetch(pokemon) {
   let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
   let data = await response.json();
@@ -53,26 +53,45 @@ async function formatPokemonData(data) {
 }
 
 async function fetchPokemonSpecies(pokemonName) {
-  let speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`);
-  let speciesData = await speciesResponse.json();
-  accessPokemonChain(speciesData, pokemonName);
+  try {
+    let speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`);
+    let speciesData = await speciesResponse.json();
+    accessPokemonChain(speciesData, pokemonName);
+  } catch (error) {
+    console.error(`Error in fetchPokemonSpecies: ${error}`);
+  }
 }
 
 async function accessPokemonChain(speciesData, pokemonName) {
-  let chainUrl = speciesData.evolution_chain.url;
-  let chainResponse = await fetch(chainUrl);
-  let chainData = await chainResponse.json();
+  try {
+    let chainUrl = speciesData.evolution_chain.url;
+    let chainResponse = await fetch(chainUrl);
+    let chainData = await chainResponse.json();
+    let chain = chainData.chain;
+    loopChainsAndSaveToArray(chain, pokemonName);
+  } catch (error) {
+    console.error(`Error in accessPokemonChain: ${error}`);
+  }
+}
 
-  let chain = chainData.chain;
+function loopChainsAndSaveToArray(chain, pokemonName) {
   let chainArray = [];
 
   while (chain) {
-    chainArray.push(chain.species.name);
+    let name = chain.species.name;
+    let pokemonData = pokemonDetails.find((p) => p.name.toLowerCase() === name.toLowerCase());
+    if (pokemonData) {
+      console.warn(`Pokemon found in pokemonDetails: ${name}`);
+    }
+    let id = pokemonData ? pokemonData.id : "unknown";
+
+    chainArray.push({ name, id });
     chain = chain.evolves_to.length ? chain.evolves_to[0] : null;
   }
 
   pokemonDetails.forEach((pokemon) => {
     if (pokemon.name.toLowerCase() === pokemonName.toLowerCase()) {
+      console.log(`Updating evolution chain for: ${pokemon.name}`);
       pokemon.chain = chainArray;
     }
   });
@@ -111,11 +130,12 @@ function capitalizeWords(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-function showOverlay(pokemonInfo) {
+async function showOverlay(pokemonInfo) {
   document.getElementById("pokemonOverlay").style.display = "flex";
   currentPokemon = pokemonInfo;
   getInfoOverlay(pokemonInfo);
   checkOverlayBgColor(pokemonInfo);
+  await fetchPokemonSpecies(pokemonInfo.name);
 }
 
 function closeOverlay() {
@@ -136,7 +156,7 @@ function renderOverlayTypeIcons(pokemon) {
 
   if (!typeContainer) return;
 
-  typeContainer.innerHTML = ""; // Lösche vorherige Inhalte, falls vorhanden
+  typeContainer.innerHTML = "";
 
   for (let i = 0; i < pokemon.types.length; i++) {
     let type = pokemon.types[i];
@@ -202,17 +222,17 @@ function filterRenderedPokemons() {
   }
 }
 
-function switchOverlayTab(tabName, clickedButton) {
+async function switchOverlayTab(tabName, clickedButton) {
   const allTabs = document.querySelectorAll(".overlay-tab");
 
   allTabs.forEach((tab) => tab.classList.remove("active"));
 
   clickedButton.classList.add("active");
 
-  renderTabContent(tabName);
+  await renderTabContent(tabName);
 }
 
-function renderTabContent(tabName) {
+async function renderTabContent(tabName) {
   let tabsContainerRef = document.getElementById("overlay-details");
   tabsContainerRef.innerHTML = "";
 
@@ -220,16 +240,28 @@ function renderTabContent(tabName) {
     case "main":
       tabsContainerRef.innerHTML = createOverlayDetailsMain(currentPokemon);
       break;
+
     case "stats":
       tabsContainerRef.innerHTML = getStatsTemplate(currentPokemon);
       break;
 
     case "evochain":
-      tabsContainerRef.innerHTML = getEvoChainTemplate();
+      try {
+        tabsContainerRef.innerHTML = `<p>Loading evolution chain...</p>`;
+
+        await fetchPokemonSpecies(currentPokemon.name);
+
+        // Ensure evolution chain is set before rendering
+        let updatedPokemon = pokemonDetails.find((p) => p.name.toLowerCase() === currentPokemon.name.toLowerCase());
+
+        tabsContainerRef.innerHTML = getEvoChainTemplate(updatedPokemon);
+      } catch (error) {
+        console.error("Error fetching evolution chain:", error);
+      }
       break;
 
     default:
-      createOverlayDetailsMain(currentPokemon);
+      tabsContainerRef.innerHTML = createOverlayDetailsMain(currentPokemon);
       break;
   }
 }
