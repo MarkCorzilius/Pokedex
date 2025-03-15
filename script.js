@@ -64,37 +64,57 @@ async function fetchPokemonSpecies(pokemonName) {
 
 async function accessPokemonChain(speciesData, pokemonName) {
   try {
-    let chainUrl = speciesData.evolution_chain.url;
-    let chainResponse = await fetch(chainUrl);
-    let chainData = await chainResponse.json();
-    let chain = chainData.chain;
-    loopChainsAndSaveToArray(chain, pokemonName);
+    let evolutionData = await showEvolutionChain(pokemonName);
+
+    // Update pokeChains
+    let pokemon = pokeChains.find((p) => p.name.toLowerCase() === pokemonName.toLowerCase());
+
+    if (pokemon) {
+      pokemon.chain = evolutionData;
+    }
+
+    // Also update pokemonDetails
+    let pokemonInDetails = pokemonDetails.find((p) => p.name.toLowerCase() === pokemonName.toLowerCase());
+
+    if (pokemonInDetails) {
+      pokemonInDetails.chain = evolutionData;
+    }
   } catch (error) {
     console.error(`Error in accessPokemonChain: ${error}`);
   }
 }
 
-function loopChainsAndSaveToArray(chain, pokemonName) {
-  let chainArray = [];
+async function showEvolutionChain(pokemonName) {
+  try {
+    pokeChains = [];
+    let speciesData = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`).then((r) => r.json());
 
-  while (chain) {
-    let name = chain.species.name;
-    let pokemonData = pokemonDetails.find((p) => p.name.toLowerCase() === name.toLowerCase());
-    if (pokemonData) {
-      console.warn(`Pokemon found in pokemonDetails: ${name}`);
-    }
-    let id = pokemonData ? pokemonData.id : "unknown";
+    let evolutionChainData = await fetch(speciesData.evolution_chain.url).then((r) => r.json());
 
-    chainArray.push({ name, id });
-    chain = chain.evolves_to.length ? chain.evolves_to[0] : null;
+    await extractEvolutionData(evolutionChainData.chain);
+
+    console.table(pokeChains);
+
+    return pokeChains;
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Evolution-Kette:", error);
+
+    return [];
   }
+}
 
-  pokemonDetails.forEach((pokemon) => {
-    if (pokemon.name.toLowerCase() === pokemonName.toLowerCase()) {
-      console.log(`Updating evolution chain for: ${pokemon.name}`);
-      pokemon.chain = chainArray;
-    }
-  });
+async function extractEvolutionData(chain) {
+  if (!chain) return;
+
+  let name = chain.species.name;
+
+  let pokemonData = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`).then((r) => r.json());
+
+  pokeChains.push({ name, img: pokemonData.sprites.front_default });
+
+  for (let evolution of chain.evolves_to) {
+    await extractEvolutionData(evolution);
+  }
 }
 
 async function fetchPokemonType(pokemonData) {
@@ -133,9 +153,11 @@ function capitalizeWords(str) {
 async function showOverlay(pokemonInfo) {
   document.getElementById("pokemonOverlay").style.display = "flex";
   currentPokemon = pokemonInfo;
+
+  await fetchPokemonSpecies(pokemonInfo.name);
+
   getInfoOverlay(pokemonInfo);
   checkOverlayBgColor(pokemonInfo);
-  await fetchPokemonSpecies(pokemonInfo.name);
 }
 
 function closeOverlay() {

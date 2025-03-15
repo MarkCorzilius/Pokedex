@@ -26,3 +26,5 @@ let offset = 20;
 const limit = 20;
 
 let currentPokemon = null;
+
+let pokeChains = [];

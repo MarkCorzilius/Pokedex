@@ -87,20 +87,18 @@ function getStatsTemplate(pokemon) {
 }
 
 function getEvoChainTemplate(pokemonDetails) {
-  if (!pokemonDetails.chain || pokemonDetails.chain.length === 0) {
+  if (!pokemonDetails || !pokemonDetails.chain || pokemonDetails.chain.length === 0) {
     return `<p>No evolution data available.</p>`;
   }
 
   let stages = pokemonDetails.chain
-    .map(({ name, id }) => {
-      let imgSrc = id ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png` : "";
-
+    .map(({ name, img }) => {
       return `
-          <div class="evo-stage">
-              <img src="${imgSrc}" alt="${name}">
-              <p>${name}</p>
-          </div>
-        `;
+              <div class="evo-stage">
+                  <img src="${img}" alt="${name}">
+                  <p>${capitalizeWords(name)}</p>
+              </div>
+            `;
     })
     .join('<span class="arrow"> &gt;&gt; </span>');
 

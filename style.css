@@ -198,8 +198,18 @@
 
 .more-pokemons-button-container {
   width: 100%;
-  display: flex;
-  justify-content: center;
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#more-pokemons-button-container {
+  display: block;
+}
+
+.footer-container {
+  position: relative;
 }
 
 .more-pokemons-button {
