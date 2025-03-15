@@ -154,6 +154,7 @@ function capitalizeWords(str) {
 }
 
 async function showOverlay(pokemonInfo) {
+  document.body.style.overflow = "hidden";
   document.getElementById("pokemonOverlay").style.display = "flex";
   currentPokemon = pokemonInfo;
 
@@ -164,6 +165,7 @@ async function showOverlay(pokemonInfo) {
 }
 
 function closeOverlay() {
+  document.body.style.overflow = "auto";
   document.getElementById("pokemonOverlay").style.display = "none";
   deleteChainsAfterUsage();
 }
@@ -323,5 +325,5 @@ function changeOverlayPage(direction, pokemonId) {
 function scrollToBottom() {
   setTimeout(() => {
     window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
-  }, 100);
+  }, 300);
 }
