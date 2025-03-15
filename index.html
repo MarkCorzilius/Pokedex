@@ -29,16 +29,17 @@
       </div>
       <div class="search-container">
         <input type="text" id="search-input" class="search-input" oninput="filterRenderedPokemons()" placeholder="Search your Pokemon" />
-        <button onclick="fetchMorePokemons()" id="search-button" class="search-button">
+        <button id="search-button" class="search-button">
           <img src="assets/icons/searchLoop.png" alt="Search" />
         </button>
       </div>
     </header>
     <main>
+      <div id="spinner" class="spinner" style="display: block"></div>
       <div id="pokemon-container"></div>
     </main>
     <div class="footer-container">
-      <div class="more-pokemons-button-container" id="more-pokemons-button-container">
+      <div class="more-pokemons-button-container" id="batchPokemonsBtn">
         <button onclick="fetchMorePokemons()" class="more-pokemons-button">More pokemons</button>
       </div>
       <footer>

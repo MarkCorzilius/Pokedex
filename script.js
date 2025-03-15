@@ -15,6 +15,7 @@ function renderPokemonCards(pokemonData) {
 }
 
 async function fetchPokemonData() {
+  document.getElementById("spinner").style.display = "block";
   try {
     let response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`);
     let data = await response.json();
@@ -28,6 +29,8 @@ async function fetchPokemonData() {
   } catch (error) {
     console.error("Error fetching Pokémon data:", error);
     return [];
+  } finally {
+    document.getElementById("spinner").style.display = "none";
   }
 }
 
@@ -162,6 +165,11 @@ async function showOverlay(pokemonInfo) {
 
 function closeOverlay() {
   document.getElementById("pokemonOverlay").style.display = "none";
+  deleteChainsAfterUsage();
+}
+
+function deleteChainsAfterUsage() {
+  pokemonDetails.forEach((pokemon) => (pokemon.chain = null));
 }
 
 function checkOverlayBgColor(pokemonInfo) {
@@ -213,18 +221,29 @@ async function fetchPokemonDetails(pokemonList) {
 
 async function fetchMorePokemons() {
   if (!enforcePokemonRenderLimit()) return;
+  document.getElementById("pokemon-container").style.display = "none";
+  document.getElementById("spinner").style.display = "block";
+  document.getElementById("batchPokemonsBtn").style.display = "none";
+  try {
+    let pokemonList = await fetchPokemonList();
+    let { newPokemonList, newPokemonHTML } = await fetchPokemonDetails(pokemonList);
 
-  let pokemonList = await fetchPokemonList();
-  let { newPokemonList, newPokemonHTML } = await fetchPokemonDetails(pokemonList);
-
-  document.getElementById("pokemon-container").innerHTML += newPokemonHTML.join("");
-  offset += limit;
-  fetchPokemonType(newPokemonList);
+    document.getElementById("pokemon-container").innerHTML += newPokemonHTML.join("");
+    offset += limit;
+    fetchPokemonType(newPokemonList);
+  } catch (error) {
+    console.error("Error fetching data", error);
+  } finally {
+    document.getElementById("pokemon-container").style.display = "grid";
+    document.getElementById("batchPokemonsBtn").style.display = "block";
+    document.getElementById("spinner").style.display = "none";
+  }
+  scrollToBottom();
 }
 
 function enforcePokemonRenderLimit() {
-  if (offset >= 200) {
-    alert("Limit of 200 Pokémon reached!");
+  if (offset >= 1000) {
+    alert("Limit of 1000 Pokémon reached!");
     return false;
   } else return true;
 }
@@ -295,6 +314,14 @@ function changeOverlayPage(direction, pokemonId) {
     pokemonId++;
   } else return;
 
+  deleteChainsAfterUsage();
+
   let newPokemon = pokemonDetails.find((p) => p.id === pokemonId);
   showOverlay(newPokemon);
+}
+
+function scrollToBottom() {
+  setTimeout(() => {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+  }, 100);
 }

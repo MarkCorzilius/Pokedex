@@ -204,10 +204,6 @@
   transform: translateX(-50%);
 }
 
-#more-pokemons-button-container {
-  display: block;
-}
-
 .footer-container {
   position: relative;
 }
