@@ -4,8 +4,6 @@ async function init() {
   fetchPokemonType(pokemonData);
 }
 
-window.onload = init;
-
 function renderPokemonCards(pokemonData) {
   let container = document.getElementById("pokemon-container");
 
@@ -20,18 +18,22 @@ async function fetchPokemonData() {
     let response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`);
     let data = await response.json();
 
-    for (let i = 0; i < data.results.length; i++) {
-      let pokemon = data.results[i].name;
-      let pokemonData = await handleFetch(pokemon);
-      pokemonDetails.push(pokemonData);
-    }
-    return pokemonDetails;
+    return await LoopThroughPokemonData(data);
   } catch (error) {
     console.error("Error fetching Pokémon data:", error);
     return [];
   } finally {
     document.getElementById("spinner").style.display = "none";
   }
+}
+
+async function LoopThroughPokemonData(data) {
+  for (let i = 0; i < data.results.length; i++) {
+    let pokemon = data.results[i].name;
+    let pokemonData = await handleFetch(pokemon);
+    pokemonDetails.push(pokemonData);
+  }
+  return pokemonDetails;
 }
 
 async function handleFetch(pokemon) {
@@ -57,53 +59,55 @@ async function formatPokemonData(data) {
 
 async function fetchPokemonSpecies(pokemonName) {
   try {
-    let speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`);
-    let speciesData = await speciesResponse.json();
-    accessPokemonChain(speciesData, pokemonName);
+    await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`);
+    accessPokemonChain(pokemonName);
   } catch (error) {
     console.error(`Error in fetchPokemonSpecies: ${error}`);
   }
 }
 
-async function accessPokemonChain(speciesData, pokemonName) {
+async function accessPokemonChain(pokemonName) {
   try {
     let evolutionData = await showEvolutionChain(pokemonName);
 
-    // Update pokeChains
-    let pokemon = pokeChains.find((p) => p.name.toLowerCase() === pokemonName.toLowerCase());
-
-    if (pokemon) {
-      pokemon.chain = evolutionData;
-    }
-
-    // Also update pokemonDetails
-    let pokemonInDetails = pokemonDetails.find((p) => p.name.toLowerCase() === pokemonName.toLowerCase());
-
-    if (pokemonInDetails) {
-      pokemonInDetails.chain = evolutionData;
-    }
+    return await findPokemonInArrays(evolutionData, pokemonName);
   } catch (error) {
     console.error(`Error in accessPokemonChain: ${error}`);
   }
 }
 
+async function findPokemonInArrays(evolutionData, pokemonName) {
+  let pokemon = pokeChains.find((p) => p.name.toLowerCase() === pokemonName.toLowerCase());
+
+  if (pokemon) {
+    pokemon.chain = evolutionData;
+  }
+
+  let pokemonInDetails = pokemonDetails.find((p) => p.name.toLowerCase() === pokemonName.toLowerCase());
+
+  if (pokemonInDetails) {
+    pokemonInDetails.chain = evolutionData;
+  }
+}
+
 async function showEvolutionChain(pokemonName) {
   try {
-    pokeChains = [];
-    let speciesData = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`).then((r) => r.json());
-
-    let evolutionChainData = await fetch(speciesData.evolution_chain.url).then((r) => r.json());
-
-    await extractEvolutionData(evolutionChainData.chain);
-
-    console.table(pokeChains);
-
-    return pokeChains;
+    return await retrieveEvoChain(pokemonName);
   } catch (error) {
     console.error("Fehler beim Abrufen der Evolution-Kette:", error);
-
     return [];
   }
+}
+
+async function retrieveEvoChain(pokemonName) {
+  pokeChains = [];
+  let speciesData = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`).then((r) => r.json());
+
+  let evolutionChainData = await fetch(speciesData.evolution_chain.url).then((r) => r.json());
+
+  await extractEvolutionData(evolutionChainData.chain);
+
+  return pokeChains;
 }
 
 async function extractEvolutionData(chain) {
@@ -157,7 +161,6 @@ async function showOverlay(pokemonInfo) {
   document.body.style.overflow = "hidden";
   document.getElementById("pokemonOverlay").style.display = "flex";
   currentPokemon = pokemonInfo;
-
   await fetchPokemonSpecies(pokemonInfo.name);
 
   getInfoOverlay(pokemonInfo);
@@ -294,7 +297,6 @@ async function renderTabContent(tabName) {
 
         await fetchPokemonSpecies(currentPokemon.name);
 
-        // Ensure evolution chain is set before rendering
         let updatedPokemon = pokemonDetails.find((p) => p.name.toLowerCase() === currentPokemon.name.toLowerCase());
 
         tabsContainerRef.innerHTML = getEvoChainTemplate(updatedPokemon);
